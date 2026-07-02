@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Invitación XV Años</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family: Georgia, serif;
+  background:#f3eee6;
+  color:#333;
+  overflow-x:hidden;
+}
+:root{
+  --olive:#6f7356;
+  --olive-dark:#44482f;
+  --cream:#f7f1e8;
+  --rose:#b98a7d;
+  --gold:#b59a63;
+}
+.open-screen{
+  position:fixed;
+  inset:0;
+  background:#eee7dd;
+  z-index:999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:1s ease;
+}
+.open-screen.hide{
+  opacity:0;
+  pointer-events:none;
+}
+.envelope-wrap{
+  text-align:center;
+}
+.envelope{
+  width:320px;
+  height:220px;
+  background:#f7f1e8;
+  position:relative;
+  box-shadow:0 20px 50px #0002;
+  border-radius:8px;
+  cursor:pointer;
+  transition:.6s;
+}
+.envelope:hover{transform:scale(1.03)}
+.flap{
+  position:absolute;
+  inset:0;
+  background:#efe6da;
+  clip-path:polygon(0 0,100% 0,50% 55%);
+  transform-origin:top;
+  transition:1s ease;
+  z-index:2;
+}
+.envelope.open .flap{
+  transform:rotateX(180deg);
+}
+.seal{
+  position:absolute;
+  width:86px;
+  height:86px;
+  border-radius:50%;
+  background:radial-gradient(circle,#9c9b7b,#6f7356);
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:32px;
+  box-shadow:0 8px 20px #0004;
+}
+.envelope.open .seal{opacity:0}
+.open-text{
+  margin-top:25px;
+  color:#7b655b;
+  font-style:italic;
+  font-size:20px;
+}
+.main{
+  display:none;
+  animation:fadeUp 1s ease;
+}
+.main.show{display:block}
+.hero{
+  min-height:100vh;
+  background:
+    linear-gradient(90deg,rgba(247,241,232,.96),rgba(247,241,232,.70)),
+    url("https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600") center/cover;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:50px 8%;
+}
+.hero-img{
+  width:100%;
+  max-width:430px;
+  height:560px;
+  border-radius:230px 230px 20px 20px;
+  object-fit:cover;
+  box-shadow:0 20px 50px #0003;
+}
+.hero-text{text-align:center}
+.small{
+  letter-spacing:8px;
+  color:var(--olive);
+  margin-bottom:25px;
+}
+h1{
+  font-size:clamp(62px,12vw,120px);
+  font-weight:normal;
+  letter-spacing:10px;
+}
+.script{
+  font-size:clamp(42px,8vw,80px);
+  color:var(--rose);
+  font-style:italic;
+  margin-top:-20px;
+}
+.btn{
+  display:inline-block;
+  margin-top:25px;
+  padding:14px 32px;
+  border-radius:30px;
+  background:var(--olive);
+  color:white;
+  text-decoration:none;
+  border:none;
+  cursor:pointer;
+  letter-spacing:2px;
+}
+section{
+  padding:70px 8%;
+}
+.section-title{
+  text-align:center;
+  font-size:34px;
+  letter-spacing:4px;
+  color:#333;
+  font-weight:normal;
+  margin-bottom:10px;
+}
+.divider{text-align:center;color:var(--rose);font-size:24px;margin-bottom:35px}
+.countdown-section{
+  background:var(--olive);
+  color:white;
+}
+.countdown{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  max-width:760px;
+  margin:auto;
+  gap:20px;
+}
+.time-box{
+  border:1px solid #ffffff55;
+  padding:25px 10px;
+  text-align:center;
+  border-radius:12px;
+}
+.time-box span{
+  font-size:50px;
+  display:block;
+}
+.details-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+  text-align:center;
+}
+.card{
+  background:white;
+  padding:28px;
+  border-radius:18px;
+  box-shadow:0 12px 30px #0001;
+}
+.icon{font-size:34px;color:var(--olive);margin-bottom:14px}
+.location-grid{
+  display:grid;
+  grid-template-columns:1fr 1.4fr;
+  gap:25px;
+  margin-top:35px;
+}
+iframe,.parking-img{
+  width:100%;
+  height:330px;
+  border:0;
+  border-radius:18px;
+  box-shadow:0 12px 30px #0002;
+  object-fit:cover;
+}
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+.gallery img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:14px;
+  box-shadow:0 12px 25px #0002;
+}
+.rsvp{
+  background:#faf7f0;
+}
+form{
+  max-width:800px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:15px;
+}
+input,select,textarea{
+  padding:15px;
+  border:1px solid #d8cfc3;
+  border-radius:10px;
+  background:white;
+  font-size:15px;
+}
+textarea{
+  grid-column:1/-1;
+  min-height:100px;
+}
+form button{
+  grid-column:1/-1;
+  justify-self:center;
+}
+#mensaje{
+  text-align:center;
+  margin-top:20px;
+  color:var(--olive);
+}
+.whatsapp{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:#25D366;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  text-decoration:none;
+  z-index:50;
+}
+.music{
+  position:fixed;
+  left:18px;
+  bottom:18px;
+  z-index:50;
+  background:var(--olive);
+  color:white;
+  border:none;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  font-size:24px;
+}
+footer{
+  text-align:center;
+  padding:40px;
+  background:var(--olive-dark);
+  color:white;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(max-width:768px){
+  .hero{
+    grid-template-columns:1fr;
+    text-align:center;
+    gap:30px;
+    padding:35px 22px;
+  }
+  .hero-img{
+    height:420px;
+    order:-1;
+    margin:auto;
+  }
+  .countdown{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .details-grid,.location-grid,.gallery,form{
+    grid-template-columns:1fr;
+  }
+  .gallery img{height:250px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="open-screen" id="openScreen">
+  <div class="envelope-wrap">
+    <div class="envelope" id="envelope">
+      <div class="flap"></div>
+      <div class="seal">❦</div>
+    </div>
+    <p class="open-text">Toca para abrir</p>
+  </div>
+</div>
+
+<main class="main" id="mainContent">
+
+<button class="music" id="musicBtn">♪</button>
+<a class="whatsapp" href="https://wa.me/5215512345678" target="_blank">✆</a>
+
+<audio id="music" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<header class="hero">
+  <div>
+    <img class="hero-img" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200" alt="Sofía">
+  </div>
+
+  <div class="hero-text">
+    <p class="small">ESTÁS INVITADO A CELEBRAR</p>
+    <h1>SOFÍA</h1>
+    <div class="script">Martínez</div>
+    <p class="small">MIS XV AÑOS</p>
+    <a href="#contador" class="btn">VER INVITACIÓN</a>
+  </div>
+</header>
+
+<section id="contador" class="countdown-section">
+  <h2 class="section-title" style="color:white;">FALTAN</h2>
+  <div class="divider">♡</div>
+
+  <div class="countdown">
+    <div class="time-box"><span id="days">00</span>DÍAS</div>
+    <div class="time-box"><span id="hours">00</span>HORAS</div>
+    <div class="time-box"><span id="minutes">00</span>MINUTOS</div>
+    <div class="time-box"><span id="seconds">00</span>SEGUNDOS</div>
+  </div>
+</section>
+
+<section>
+  <h2 class="section-title">DETALLES DEL EVENTO</h2>
+  <div class="divider">♡</div>
+
+  <div class="details-grid">
+    <div class="card">
+      <div class="icon">📅</div>
+      <h3>FECHA</h3>
+      <p>18 de diciembre de 2026</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🕗</div>
+      <h3>HORA</h3>
+      <p>8:00 PM</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">👗</div>
+      <h3>VESTIMENTA</h3>
+      <p>Formal</p>
+    </div>
+  </div>
+
+  <div class="location-grid">
+    <div class="card">
+      <div class="icon">📍</div>
+      <h3>LUGAR</h3>
+      <p>
+        Departamento Urbania<br>
+        Eduardo Molina, Gustavo A. Madero<br>
+        Ciudad de México
+      </p>
+      <a class="btn" href="https://www.google.com/maps" target="_blank">VER UBICACIÓN</a>
+    </div>
+
+    <iframe
+      src="https://www.google.com/maps?q=Eduardo%20Molina%20Gustavo%20A%20Madero%20CDMX&output=embed"
+      loading="lazy">
+    </iframe>
+  </div>
+</section>
+
+<section>
+  <h2 class="section-title">ESTACIONAMIENTO</h2>
+  <div class="divider">♡</div>
+
+  <div class="location-grid">
+    <div class="card">
+      <div class="icon">🚗</div>
+      <h3>¿DÓNDE DEJAR TU CARRO?</h3>
+      <p>
+        Como el edificio no cuenta con estacionamiento para invitados,
+        te recomendamos dejar tu carro en el estacionamiento de la plaza cercana.
+      </p>
+      <a class="btn" href="https://www.google.com/maps" target="_blank">VER UBICACIÓN</a>
+    </div>
+
+    <img class="parking-img"
+      src="https://images.unsplash.com/photo-1506521781263-d8422e82f27a?q=80&w=1600"
+      alt="Estacionamiento">
+  </div>
+</section>
+
+<section>
+  <h2 class="section-title">GALERÍA</h2>
+  <div class="divider">♡</div>
+
+  <div class="gallery">
+    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200">
+    <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1200">
+    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1200">
+    <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=1200">
+  </div>
+</section>
+
+<section class="rsvp">
+  <h2 class="section-title">CONFIRMA TU ASISTENCIA</h2>
+  <div class="divider">♡</div>
+
+  <form id="rsvpForm">
+    <input id="nombre" type="text" placeholder="Tu nombre" required>
+
+    <select id="asistencia" required>
+      <option value="">¿Asistirás?</option>
+      <option value="Sí">Sí asistiré</option>
+      <option value="No">No podré asistir</option>
+    </select>
+
+    <input id="acompanantes" type="number" min="0" value="0" placeholder="Acompañantes">
+
+    <textarea id="mensajeInvitado" placeholder="Mensaje opcional"></textarea>
+
+    <button class="btn" type="submit">ENVIAR CONFIRMACIÓN</button>
+  </form>
+
+  <p id="mensaje"></p>
+</section>
+
+<footer>
+  ¡Gracias por acompañarme en este día tan especial!
+</footer>
+
+</main>
+
+<script>
+const envelope = document.getElementById("envelope");
+const openScreen = document.getElementById("openScreen");
+const mainContent = document.getElementById("mainContent");
+
+envelope.addEventListener("click", () => {
+  envelope.classList.add("open");
+
+  setTimeout(() => {
+    openScreen.classList.add("hide");
+    mainContent.classList.add("show");
+  }, 1100);
+});
+
+const eventDate = new Date("2026-12-18T20:00:00").getTime();
+
+function twoDigits(n){
+  return n < 10 ? "0" + n : n;
+}
+
+function updateCountdown(){
+  const now = new Date().getTime();
+  const distance = eventDate - now;
+
+  if(distance <= 0){
+    document.getElementById("days").innerText = "00";
+    document.getElementById("hours").innerText = "00";
+    document.getElementById("minutes").innerText = "00";
+    document.getElementById("seconds").innerText = "00";
+    return;
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((distance / (1000 * 60)) % 60);
+  const seconds = Math.floor((distance / 1000) % 60);
+
+  document.getElementById("days").innerText = twoDigits(days);
+  document.getElementById("hours").innerText = twoDigits(hours);
+  document.getElementById("minutes").innerText = twoDigits(minutes);
+  document.getElementById("seconds").innerText = twoDigits(seconds);
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
+let playing = false;
+
+musicBtn.addEventListener("click", () => {
+  if(!playing){
+    music.play();
+    musicBtn.innerText = "❚❚";
+    playing = true;
+  } else {
+    music.pause();
+    musicBtn.innerText = "♪";
+    playing = false;
+  }
+});
+
+const scriptURL = "AQUI_VA_TU_URL_DE_GOOGLE_APPS_SCRIPT";
+
+document.getElementById("rsvpForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+
+  const datos = {
+    fecha: new Date().toLocaleString(),
+    nombre: document.getElementById("nombre").value,
+    asistencia: document.getElementById("asistencia").value,
+    acompanantes: document.getElementById("acompanantes").value,
+    mensaje: document.getElementById("mensajeInvitado").value
+  };
+
+  try{
+    await fetch(scriptURL,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(datos)
+    });
+
+    document.getElementById("mensaje").innerText = "✅ Confirmación enviada. ¡Gracias!";
+    document.getElementById("rsvpForm").reset();
+  }catch(error){
+    document.getElementById("mensaje").innerText = "❌ Ocurrió un error. Intenta de nuevo.";
+  }
+});
+</script>
+
+</body>
+</html>
